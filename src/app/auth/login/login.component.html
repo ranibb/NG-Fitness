@@ -6,7 +6,8 @@
         formControlName="email" 
         placeholder="Your email" 
         matInput>
-        <mat-error *ngIf="!loginForm.get('email').valid && loginForm.get('email').touched">Enter a proper email.</mat-error>
+        <mat-error *ngIf="loginForm.get('email').hasError('required')">Enter your email.</mat-error>
+        <mat-error *ngIf="loginForm.get('email').hasError('email')">E-mail is invalid.</mat-error>
     </mat-form-field>
     <mat-form-field>
       <input 
@@ -14,7 +15,8 @@
       formControlName="password" 
       placeholder="Your password" 
       matInput>
-      <mat-error *ngIf="!loginForm.get('password').valid">Enter your password.</mat-error>
+      <mat-hint align="end">{{loginForm.get('password').value ? loginForm.get('password').value.length : 0}} / 6</mat-hint>
+      <mat-error *ngIf="loginForm.get('password').hasError('required')">Enter your password.</mat-error>
     </mat-form-field>
     <button type="submit" mat-raised-button color="primary" [disabled]="loginForm.invalid">Login</button>
     <!-- <p>
