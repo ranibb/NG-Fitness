@@ -18,3 +18,14 @@ To prevent this, return a new object and use the object spread operator to sprea
 This will break this reference and actually return a brand new user that has the same properties but as a different object.
 
 So if other parts of the app start manipulating this object which we return here they won't manipulate this original user which is a better practice than directly returning the user.
+
+## A type assignment syntax
+
+You can assign a couple of possible values as a type. For example; completed or canceled or null as a state. 
+
+```TypeScript
+export interface Exercise {
+    //..
+    state?: 'completed' | 'cancelled' | null;
+}
+```
