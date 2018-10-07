@@ -5,13 +5,14 @@ import { AngularFireAuth } from '@angular/fire/auth';
 
 import { User } from "./user.model";
 import { AuthData } from "./auth-data.model";
+import { TrainingService } from "../training/training.service";
 
 @Injectable()
 export class AuthService {
   authChange = new Subject<boolean>();
   private isAuthenticated = false;
 
-  constructor(private router: Router, private afAuth: AngularFireAuth) { }
+  constructor(private router: Router, private afAuth: AngularFireAuth, private trainingService: TrainingService) { }
 
   registerUser(authData: AuthData) {
     this.afAuth.auth.createUserAndRetrieveDataWithEmailAndPassword(
@@ -40,6 +41,8 @@ export class AuthService {
   }
 
   logout() {
+    this.trainingService.cancelSubscriptions();
+    this.afAuth.auth.signOut();
     this.authChange.next(false);
     this.router.navigate(['/login']);
     this.isAuthenticated = false;
