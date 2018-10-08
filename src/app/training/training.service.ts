@@ -28,25 +28,30 @@ export class TrainingService {
             .collection('availableExercises')
             .snapshotChanges()
             .pipe(
-            map(docArray => {
-                return docArray.map(doc => {
-                return {
-                    id: doc.payload.doc.id,
-                    ...doc.payload.doc.data() as Exercise
-                }
+                map(docArray => {
+                    // throw(new Error());
+                    return docArray.map(doc => {
+                        return {
+                            id: doc.payload.doc.id,
+                            ...doc.payload.doc.data() as Exercise
+                        }
+                    })
                 })
-            })
             )
             .subscribe((exercises: Exercise[]) => {
                 this.uiService.loadingStateChanged.next(false)
                 console.log(exercises);
                 this.availableExercises = exercises;
                 this.exercisesChanged.next([...this.availableExercises])
+            }, error => {
+                this.uiService.loadingStateChanged.next(false);
+                this.uiService.showSnackbar('Fetching Exercises faild, please try again later', null, 3000)
+                this.exercisesChanged.next(null)
             }))
     }
 
     startExercise(selectedId: string) {
-        
+
         /* Example of selecting a single document and then update it. */
         // this.db.doc('availableExercises/' + selectedId).update({
         //     lastSelected: new Date()
@@ -64,10 +69,10 @@ export class TrainingService {
 
     cancelExercise(progress: number) {
         this.addDataToDatabase({
-            ...this.runningExercise, 
-            duration: this.runningExercise.duration * (progress / 100), 
-            calories: this.runningExercise.calories * (progress / 100), 
-            date: new Date(), 
+            ...this.runningExercise,
+            duration: this.runningExercise.duration * (progress / 100),
+            calories: this.runningExercise.calories * (progress / 100),
+            date: new Date(),
             state: 'cancalled'
         })
         this.runningExercise = null;
@@ -84,7 +89,7 @@ export class TrainingService {
             .valueChanges()
             .subscribe((exercises: Exercise[]) => {
                 this.finshedExercisesChanged.next(exercises);
-        }));
+            }));
     }
 
     cancelSubscriptions() {
