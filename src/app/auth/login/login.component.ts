@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     password: ['', Validators.required]
   });
 
-  onSubmit(loginForm: FormBuilder) {
+  onSubmit(loginForm) {
     console.log(loginForm);
     this.authService.login({
       email: this.loginForm.value.email,
