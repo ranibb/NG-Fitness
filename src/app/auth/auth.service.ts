@@ -46,7 +46,7 @@ export class AuthService {
       authData.email,
       authData.password
     ).then(result => {
-      this.uiService.loadingStateChanged.next(false);
+      // this.uiService.loadingStateChanged.next(false);
       this.store.dispatch(new UI.StopLoading)
     })
       .catch(error => {
