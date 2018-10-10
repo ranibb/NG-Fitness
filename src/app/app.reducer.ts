@@ -7,6 +7,12 @@ export interface State {
     ui: fromUi.State;
     auth: fromAuth.State;
 }
+/**
+ * Keep in mind that the training state / the training module is actually loaded lazily. 
+ * Therefore, what we can't add training as a state to our reducers map. This won't work 
+ * because this would require us to import the training reducer and the training state 
+ * ahead of time before we actually load the module.
+ */
 
 export const reducers: ActionReducerMap<State> = {
     ui: fromUi.uiReducer,
